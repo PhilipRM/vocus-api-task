@@ -11,7 +11,8 @@ def is_valid_number(number):
     if number is None:
         return False
     try:
-        parsed = phonenumbers.parse(number,"NZ")
+        formatted = "+" + number.strip()
+        parsed = phonenumbers.parse(formatted, None)
         validity = phonenumbers.is_valid_number(parsed)
     except Exception as e:
         return False
