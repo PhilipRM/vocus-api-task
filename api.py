@@ -7,19 +7,21 @@ app = Flask(__name__)
 def index():
     return ""
 
+def is_valid_number(number):
+    if number is None:
+        return False
+    try:
+        parsed = phonenumbers.parse(number,"NZ")
+        validity = phonenumbers.is_valid_number(parsed)
+    except Exception as e:
+        return False
+    return validity
+
 @app.route("/api/validate")
 def validate():
     number = request.args.get('number')
-    if number is None:
-        valid = False
-    else:
-        try:
-            parsed = phonenumbers.parse(number,"NZ")
-            valid = phonenumbers.is_valid_number(parsed)
-        except Exception as e:
-            valid = False
-
-    return json.dumps({"valid": valid})
+    validity = is_valid_number(number)
+    return json.dumps({"valid": validity})
 
 if __name__ == "__main__":
     app.run()
